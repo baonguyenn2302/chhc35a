@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Luyện tập trắc nghiệm theo chủ đề, 7 đề riêng biệt và 30 câu mỗi đề.">
+  <title>Quiz Học Tập | Luyện tập theo chủ đề</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" id="brandHome" aria-label="Quiz Học Tập - Trang chủ">
+        <span class="brand-mark">LLCT</span>
+        <span class="brand-copy">
+          <strong>Quiz Học Tập</strong>
+          <small>
+            <span>2 chủ đề ôn tập</span>
+            <span class="header-badge"><span class="status-dot"></span> 7 đề · 30 câu mỗi đề</span>
+          </small>
+        </span>
+      </a>
+      <div class="header-tools">
+        <button class="btn-header" id="resetQuiz" type="button" disabled title="Làm lại đề hiện tại">
+          <span>↻</span><span>Làm lại đề này</span>
+        </button>
+        <button class="btn-header" id="downloadQuiz" type="button" disabled title="Tải đề hiện tại">
+          <span>⇩</span><span>Tải đề (.txt)</span>
+        </button>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Chuyển giao diện sáng tối" title="Chuyển giao diện">☀</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-tabs-wrapper" id="testTabsWrapper" hidden>
+    <nav class="nav-tabs" id="testTabs" aria-label="Chọn đề luyện tập" role="tablist"></nav>
+  </div>
+
+  <main class="main-shell">
+    <section class="view active" id="homeView" aria-labelledby="homeTitle">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="eyebrow-line"></span> Không gian ôn tập của bạn</span>
+          <h1 id="homeTitle">Học theo chủ đề.<br><span>Vững vàng từng câu.</span></h1>
+          <p>Chọn một chủ đề, chọn đề luyện tập và theo dõi tiến độ ngay trong lúc làm bài.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-card">
+            <span class="art-card-icon">✓</span>
+            <div><strong>30 câu hỏi</strong><small>Mỗi đề · có chấm điểm</small></div>
+          </div>
+          <span class="art-spark spark-one">✦</span>
+          <span class="art-spark spark-two">✧</span>
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">BẮT ĐẦU ÔN TẬP</span>
+          <h2>Chọn chủ đề</h2>
+        </div>
+        <p>Hai chủ đề được tách riêng, không trộn câu hỏi.</p>
+      </div>
+      <div class="topic-grid" id="topicGrid" aria-live="polite"></div>
+      <div class="home-note">
+        <span class="note-icon">i</span>
+        <p>Mỗi chủ đề có 7 đề, mỗi đề gồm 30 câu. Câu hỏi được xáo trộn trong phạm vi chủ đề đã chọn.</p>
+      </div>
+    </section>
+
+    <section class="view" id="testsView" aria-labelledby="testsTitle">
+      <div class="page-topline">
+        <button class="text-button" id="backToTopics" type="button"><span aria-hidden="true">←</span> Tất cả chủ đề</button>
+        <span class="breadcrumb-current" id="topicBreadcrumb"></span>
+      </div>
+      <div class="section-heading tests-heading">
+        <div>
+          <span class="section-kicker">CHỌN BÀI LUYỆN</span>
+          <h1 id="testsTitle">Danh sách đề</h1>
+          <p class="section-subtitle" id="testsSubtitle"></p>
+        </div>
+        <div class="topic-total"><strong id="topicQuestionCount">140</strong><span>câu trong<br>ngân hàng</span></div>
+      </div>
+      <div class="test-grid" id="testGrid"></div>
+    </section>
+
+    <section class="view" id="matrixView" aria-labelledby="matrixTitle">
+      <div class="page-topline">
+        <button class="text-button" id="matrixBack" type="button"><span aria-hidden="true">←</span> Quay lại bài tập</button>
+        <span class="breadcrumb-current" id="matrixTopic"></span>
+      </div>
+      <div class="data-heading">
+        <div>
+          <span class="section-kicker">TRA CỨU ĐÁP ÁN</span>
+          <h1 id="matrixTitle">Bảng đáp án chi tiết</h1>
+          <p>Đáp án đúng của 7 đề thuộc chủ đề đang chọn.</p>
+        </div>
+        <button class="button button-primary" id="downloadMatrix" type="button">Tải bảng đáp án (.txt) <span>⇩</span></button>
+      </div>
+      <div class="key-table-wrapper" id="matrixTable"></div>
+    </section>
+
+    <section class="view" id="bankView" aria-labelledby="bankTitle">
+      <div class="page-topline">
+        <button class="text-button" id="bankBack" type="button"><span aria-hidden="true">←</span> Quay lại bài tập</button>
+        <span class="breadcrumb-current" id="bankTopic"></span>
+      </div>
+      <div class="data-heading bank-heading">
+        <div>
+          <span class="section-kicker">NGÂN HÀNG CÂU HỎI</span>
+          <h1 id="bankTitle">Câu hỏi gốc</h1>
+          <p id="bankSummary"></p>
+        </div>
+        <div class="bank-filters">
+          <label class="sr-only" for="bankTopicFilter">Lọc theo chủ đề</label>
+          <select id="bankTopicFilter" aria-label="Lọc câu hỏi theo chủ đề"></select>
+          <label class="sr-only" for="bankSearch">Tìm kiếm câu hỏi</label>
+          <input id="bankSearch" type="search" placeholder="Tìm câu hỏi hoặc số câu…">
+        </div>
+      </div>
+      <div class="bank-results" id="bankResults" aria-live="polite"></div>
+    </section>
+
+    <section class="view" id="reportView" aria-labelledby="reportTitle">
+      <div class="page-topline">
+        <button class="text-button" id="reportBack" type="button"><span aria-hidden="true">←</span> Quay lại bài tập</button>
+        <span class="breadcrumb-current" id="reportTopic"></span>
+      </div>
+      <div class="data-heading">
+        <div>
+          <span class="section-kicker">KIỂM TRA NGÂN HÀNG</span>
+          <h1 id="reportTitle">Báo cáo chất lượng dữ liệu</h1>
+          <p>Thống kê câu hỏi được đọc từ Markdown và bộ đề đã tạo.</p>
+        </div>
+      </div>
+      <div class="report-badges" id="reportBadges"></div>
+      <div class="report-topics" id="reportTopics"></div>
+    </section>
+
+    <section class="view" id="quizView" aria-labelledby="quizTitle">
+      <div class="page-topline quiz-topline">
+        <button class="text-button" id="backToTests" type="button"><span aria-hidden="true">←</span> Danh sách đề</button>
+        <span class="breadcrumb-current" id="quizBreadcrumb"></span>
+      </div>
+      <div class="quiz-layout">
+        <div class="quiz-main">
+          <div class="quiz-heading-card">
+            <div>
+              <span class="section-kicker" id="quizTopicLabel">ĐANG LÀM BÀI</span>
+              <h1 id="quizTitle">Đề 1</h1>
+              <div class="quiz-meta">
+                <span>◷ <strong>30 phút</strong></span>
+                <span>▤ <strong>30 câu hỏi</strong></span>
+              </div>
+            </div>
+            <div class="timer-pill" id="timerPill" aria-live="off"><span>◷</span><strong id="timerText">30:00</strong></div>
+          </div>
+          <div class="quiz-progress" aria-label="Tiến độ làm bài">
+            <div class="progress-label"><span>Tiến độ</span><strong id="progressLabel">0 / 30 câu</strong></div>
+            <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          </div>
+          <div class="questions-list" id="questionsList" aria-label="Danh sách 30 câu hỏi"></div>
+          <button class="button button-submit-mobile" id="submitMobile" type="button">Nộp bài và xem kết quả</button>
+        </div>
+
+        <aside class="quiz-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-actions">
+              <button class="button button-outline" id="resetQuizSidebar" type="button">↻ Làm lại bài này</button>
+              <button class="button button-outline" id="downloadQuizSidebar" type="button">⇩ Tải đề thi (.txt)</button>
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">
+              <div><span class="sidebar-title-icon">▦</span><strong>Câu hỏi</strong></div>
+              <span id="sidebarAnswered">0 / 30</span>
+            </div>
+            <p class="sidebar-hint">Chọn số câu để di chuyển nhanh</p>
+            <div class="question-grid" id="questionGrid" aria-label="Điều hướng câu hỏi"></div>
+            <div class="grid-legend">
+              <span><i class="legend-dot answered-dot"></i>Đã chọn</span>
+              <span><i class="legend-dot current-dot"></i>Đang xem</span>
+            </div>
+            <div class="sidebar-divider"></div>
+            <button class="button button-primary full-width" id="submitQuiz" type="button">Nộp bài & chấm điểm <span>→</span></button>
+            <p class="submit-hint">Bạn có thể nộp bài bất cứ lúc nào.</p>
+          </div>
+          <div class="sidebar-tip">
+            <span>✦</span>
+            <p><strong>Mẹo nhỏ</strong><br>Đọc kỹ câu hỏi trước khi chọn đáp án. Bạn có thể quay lại đổi câu trả lời.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="resultModal" hidden>
+    <section class="result-modal" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+      <button class="modal-close" id="closeResult" type="button" aria-label="Đóng">×</button>
+      <div class="result-icon" id="resultIcon">✓</div>
+      <span class="section-kicker">KẾT QUẢ BÀI LUYỆN</span>
+      <h2 id="resultTitle">Hoàn thành bài làm!</h2>
+      <p class="result-topic" id="resultTopic"></p>
+      <div class="score-panel">
+        <strong id="scoreValue">0.0</strong><span>/ 10 điểm</span>
+      </div>
+      <div class="result-stats">
+        <div><strong class="stat-correct" id="correctCount">0</strong><span>Câu đúng</span></div>
+        <div><strong class="stat-wrong" id="wrongCount">0</strong><span>Câu sai</span></div>
+        <div><strong class="stat-skipped" id="skippedCount">0</strong><span>Bỏ trống</span></div>
+      </div>
+      <p class="result-feedback" id="resultFeedback"></p>
+      <div class="result-actions">
+        <button class="button button-secondary" id="reviewAnswers" type="button">Xem lại đáp án</button>
+        <button class="button button-primary" id="retakeQuiz" type="button">Làm lại đề <span>↻</span></button>
+      </div>
+      <button class="return-link" id="resultToTests" type="button">Quay lại danh sách đề</button>
+    </section>
+  </div>
+
+  <script src="quiz_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
